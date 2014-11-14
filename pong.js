@@ -5,17 +5,21 @@ var animate = window.requestAnimationFrame ||
 
 var canvas = document.createElement('canvas');
 var scoreboard = document.createElement('div');
-scoreboard.style.width = "150px";
-scoreboard.style.height = "300px";
-scoreboard.style.background = "blue";
-scoreboard.style.color = "black";
+scoreboard.style.width = '20px';
+scoreboard.style.height = '60px';
+scoreboard.style.background = "grey";
+scoreboard.style.color = "green";
+//scoreboard.style.marginLeft = '50px';
 scoreboard.style.display = 'inline';
 scoreboard.style.align = 'center';
-scoreboard.innerHTML = "Hello";
+scoreboard.innerHTML = "<center> Your Score: </center><br> <center> Computer Score: </center>";
 scoreboard.setAttribute('class', 'scoreboard');
 
 var width = 400;
 var height = 600;
+var DEFAULT_SPEED = 10;
+var DEFAULT_PLAYER_MOVE = 10;
+var DEFAULT_DIFF = 5;
 canvas.width = width;
 canvas.height = height;
 var context = canvas.getContext('2d');
@@ -74,7 +78,7 @@ function Ball(x, y){
 	this.x = x;
 	this.y = y;
 	this.x_speed = 0;
-	this.y_speed = 3;
+	this.y_speed = DEFAULT_SPEED;
 	this.radius = 5;
 }
 
@@ -107,9 +111,9 @@ Player.prototype.update = function() {
 	for(var key in keysDown) {
 		var value = Number(key);
 		if(value == 37) { //left arrow
-			this.paddle.move(-4, 0);
+			this.paddle.move(-DEFAULT_PLAYER_MOVE, 0);
 		} else if (value == 39) { //right arrow
-			this.paddle.move(4, 0);
+			this.paddle.move(DEFAULT_PLAYER_MOVE, 0);
 		} else {
 			this.paddle.move(0, 0);
 		}
@@ -134,9 +138,11 @@ Computer.prototype.update = function(ball) {
 	var x_pos = ball.x;
 	var diff = -((this.paddle.x + (this.paddle.width / 2)) - x_pos);
 	if(diff < 0 && diff < -4) { // max speed left
-		diff = -5;
+		diff = -DEFAULT_DIFF;
+		//diff = -5;
 	} else if(diff > 0 && diff > 4) { //max speed right
-		diff = 5;
+		diff = DEFAULT_DIFF;
+		//diff = 5;
 	}
 	this.paddle.move(diff, 0);
 	if(this.paddle.x < 0) {
@@ -164,7 +170,7 @@ Ball.prototype.update = function(paddle1, paddle2) {
 
 	if(this.y < 0 || this.y > 600){ // point
 		this.x_speed = 0;
-		this.y_speed = 3;
+		this.y_speed = DEFAULT_SPEED;
 		this.x = 200;
 		this.y = 300;
 	}
@@ -172,14 +178,14 @@ Ball.prototype.update = function(paddle1, paddle2) {
 	if(top_y > 300) {
 		if(top_y < (paddle1.y + paddle1.height) && bottom_y > paddle1.y && top_x < (paddle1.x + paddle1.width) && bottom_x > paddle1.x) {
    			//hit paddle
-   			this.y_speed = -3;
+   			this.y_speed = -DEFAULT_SPEED;
    			this.x_speed += (paddle1.x_speed /2);
    			this.y += this.y_speed; 
     	}
 	} else {
 		if(top_y < (paddle2.y + paddle2.height) && bottom_y > paddle2.y && top_x < (paddle2.x + paddle2.width) && bottom_x > paddle2.x){
 			//hit comp paddle
-			this.y_speed = 3;
+			this.y_speed = DEFAULT_SPEED;
 			this.x_speed += (paddle2.x_speed / 2);
 			this.y += this.y_speed;
 		}
