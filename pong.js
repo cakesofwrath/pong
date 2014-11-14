@@ -5,21 +5,26 @@ var animate = window.requestAnimationFrame ||
 
 var canvas = document.createElement('canvas');
 var scoreboard = document.createElement('div');
-scoreboard.style.width = '20px';
-scoreboard.style.height = '60px';
-scoreboard.style.background = "grey";
-scoreboard.style.color = "green";
-//scoreboard.style.marginLeft = '50px';
-scoreboard.style.display = 'inline';
-scoreboard.style.align = 'center';
-scoreboard.innerHTML = "<center> Your Score: </center><br> <center> Computer Score: </center>";
-scoreboard.setAttribute('class', 'scoreboard');
-
-var width = 400;
+var width = 450;
 var height = 600;
-var DEFAULT_SPEED = 10;
+var DEFAULT_SPEED = 5;
 var DEFAULT_PLAYER_MOVE = 10;
 var DEFAULT_DIFF = 5;
+var playerScore = 0;
+var compScore = 0;
+//scorebd 
+scoreboard.width = '20px';
+scoreboard.height = '60px';
+scoreboard.style.background = "grey";
+scoreboard.style.color = "green";
+scoreboard.style.border = "solid";
+//scoreboard.style.marginLeft = '50px';
+//scoreboard.style.display = 'inline';
+scoreboard.style.align = 'center';
+var scoreMsg = "<center> Your Score: "+playerScore+"</center><br> <center> Computer Score: "+compScore+"</center>";
+scoreboard.html = scoreMsg;
+scoreboard.setAttribute('class', 'scoreboard');
+//Canvas decls
 canvas.width = width;
 canvas.height = height;
 var context = canvas.getContext('2d');
