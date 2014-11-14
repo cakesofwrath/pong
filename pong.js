@@ -4,6 +4,16 @@ var animate = window.requestAnimationFrame ||
 	function(callback) { window.setTimeout(callback, 1000/60)};
 
 var canvas = document.createElement('canvas');
+var scoreboard = document.createElement('div');
+scoreboard.style.width = "150px";
+scoreboard.style.height = "300px";
+scoreboard.style.background = "blue";
+scoreboard.style.color = "black";
+scoreboard.style.display = 'inline';
+scoreboard.style.align = 'center';
+scoreboard.innerHTML = "Hello";
+scoreboard.setAttribute('class', 'scoreboard');
+
 var width = 400;
 var height = 600;
 canvas.width = width;
@@ -12,6 +22,7 @@ var context = canvas.getContext('2d');
 
 window.onload = function() {
 	document.body.appendChild(canvas);
+	document.body.appendChild(scoreboard);
 	animate(step); //1.updates all the objects, 2. renders them, 3. reqAnimFrame to restep
 }
 
