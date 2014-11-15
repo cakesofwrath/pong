@@ -1,51 +1,96 @@
 var animate = window.requestAnimationFrame ||
 	window.webkitRequestAnimationFrame ||
 	window.mozRequestAnimationFrame ||
-	function(callback) { window.setTimeout(callback, 1000/60)};
+	function(callback) { window.setTimeout(callback, 1000/1)}; //originally 1000/60
 
 var canvas = document.createElement('canvas');
 var scoreboard = document.createElement('div');
-var width = 450;
+var width = 400;
 var height = 600;
-var DEFAULT_SPEED = 5;
-var DEFAULT_PLAYER_MOVE = 10;
+var DEFAULT_SPEED = 3;
+var DEFAULT_PLAYER_MOVE = 5;
 var DEFAULT_DIFF = 5;
 var playerScore = 0;
 var compScore = 0;
+
+var colorScales = { //add more from back of book
+	greys : ["#898989", "#959595", "#A0A0A0", "#ACACAC", "#B7B7B7", "#C2C2C2", "#CCCCCC", "#D7D7D7", "#ECECEC"],
+	lightBlues : ["#00AEED", "#00B5EF", "#49BDEF", "#6EC6F1", "#8DCFF4", "#A5D8F6", "#BFE2F9", "#D4ECFB", "#EBF5FC"]
+};
+var colorScalesRanges = { //this won't work... need smaller spectrums
+	greys : [parseInt("898989", 16), parseInt("ECECEC", 16)],
+	lightBlues: [parseInt("00AEED", 16), parseInt("EBF5FC", 16)]
+}
+console.log(colorScalesRanges);
+
 //scorebd 
-scoreboard.width = '20px';
-scoreboard.height = '60px';
-scoreboard.style.background = "grey";
-scoreboard.style.color = "green";
+scoreboard.style.background = "#C0C0C0";
+//scoreboard.style.color = "green";
 scoreboard.style.border = "solid";
 //scoreboard.style.marginLeft = '50px';
-//scoreboard.style.display = 'inline';
-scoreboard.style.align = 'center';
+scoreboard.style.display = 'block';
+scoreboard.style.width = '200px';
+scoreboard.style.height = '120px';
+scoreboard.style.position = 'absolute';
+scoreboard.style.left = '50%';
+scoreboard.style.top = '50%';
 var scoreMsg = "<center> Your Score: "+playerScore+"</center><br> <center> Computer Score: "+compScore+"</center>";
-scoreboard.html = scoreMsg;
+scoreboard.innerHTML = scoreMsg;
 scoreboard.setAttribute('class', 'scoreboard');
+
 //Canvas decls
 canvas.width = width;
 canvas.height = height;
+canvas.style.position = 'absolute';
+canvas.style.border = 'thin solid black';
+//canvas.style.left = '50%';
 var context = canvas.getContext('2d');
+
 
 window.onload = function() {
 	document.body.appendChild(canvas);
 	document.body.appendChild(scoreboard);
+	colorShift();
 	animate(step); //1.updates all the objects, 2. renders them, 3. reqAnimFrame to restep
 }
+
 
 var step = function() {
 	update();
 	render();
+	
 	animate(step);
 };
+
+var whiten = false;
+var colorIndex= 0;
+var currentColor = "#898989";
+var color = parseInt("89", 16);
+var currentColorScale = "greys";
+var colorShift = function() {
+	
+	/*if(colorIndex == 0 || colorIndex == colorScales[currentColorScale].length-1)
+		whiten = !whiten;
+	//console.log("colorIndex", colorIndex, "color", colorScales[currentColorScale][colorIndex]);
+
+	if(whiten) colorIndex++;
+	else colorIndex--;*/
+	if(color < parseInt("63", 16) || color > parseInt("EF", 16))
+		whiten = !whiten;
+
+	if(whiten) color += 2;
+	else color -= 2;
+
+	currentColor = "#"+color.toString(16)+""+color.toString(16)+""+color.toString(16);
+	//console.log(currentColor);
+	setTimeout("colorShift()", 100)	
+}
 
 var update = function() {
 };
 
 var render = function() {
-	context.fillStyle = "#FF00FF";
+	//context.fillStyle = "#FF00FF";
 	context.fillRect(0, 0, width, height);
 }
 
@@ -90,7 +135,7 @@ function Ball(x, y){
 Ball.prototype.render = function() {
 	context.beginPath();
 	context.arc(this.x, this.y, this.radius, 2*Math.PI, false);
-	context.fillStyle = "#000000";
+	//context.fillStyle = "#000000";
 	context.fill();
 };
 
@@ -99,7 +144,10 @@ var computer = new Computer();
 var ball = new Ball(200, 300);
 
 var render = function() {
-	context.fillStyle = "#FF00FF";
+	//context.fillStyle = "#FFFFFF";
+	//context.fillStyle = "#FF00FF";
+	//context.fillStyle = colorScales[currentColorScale][colorIndex];
+	context.fillStyle = currentColor;
 	context.fillRect(0, 0, width, height);
 	player.render();
 	computer.render();
@@ -173,7 +221,17 @@ Ball.prototype.update = function(paddle1, paddle2) {
 		this.x_speed = -this.x_speed;
 	}
 
+	if(this.y < 0){
+		console.log('you won');
+   		playerScore++;
+	}
+	else if(this.y > 600){
+		console.log('comp won');
+		compScore++;
+	}
+
 	if(this.y < 0 || this.y > 600){ // point
+		scoreboard.innerHTML = "<center> Your Score: "+playerScore+"</center><br> <center> Computer Score: "+compScore+"</center>";
 		this.x_speed = 0;
 		this.y_speed = DEFAULT_SPEED;
 		this.x = 200;
@@ -206,3 +264,8 @@ window.addEventListener("keydown", function(event) {
 window.addEventListener("keyup", function(event) {
 	delete keysDown[event.keyCode];
 });
+
+//startingColor = some hex s
+var shiftingColors = function(startingColor){
+
+}
