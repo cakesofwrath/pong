@@ -7,11 +7,17 @@ var canvas = document.createElement('canvas');
 var scoreboard = document.createElement('div');
 var width = 400;
 var height = 600;
-var DEFAULT_SPEED = 3;
+var DEFAULT_SPEED = 7;
 var DEFAULT_PLAYER_MOVE = 5;
 var DEFAULT_DIFF = 5;
 var playerScore = 0;
 var compScore = 0;
+
+var settingsMenu = document.createElement('INPUT');
+settingsMenu.setAttribute('type', 'radio');
+settingsMenu.style.background = "#C0C0C0";
+settingsMenu.style.border = "solid";
+settingsMenu.style.borderRadius = "50%"
 
 var colorScales = { //add more from back of book
 	greys : ["#898989", "#959595", "#A0A0A0", "#ACACAC", "#B7B7B7", "#C2C2C2", "#CCCCCC", "#D7D7D7", "#ECECEC"],
@@ -50,6 +56,7 @@ var context = canvas.getContext('2d');
 window.onload = function() {
 	document.body.appendChild(canvas);
 	document.body.appendChild(scoreboard);
+	document.body.appendChild(settingsMenu);
 	colorShift();
 	animate(step); //1.updates all the objects, 2. renders them, 3. reqAnimFrame to restep
 }
