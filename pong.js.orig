@@ -5,6 +5,7 @@ var animate = window.requestAnimationFrame ||
 
 var canvas = document.createElement('canvas');
 var scoreboard = document.createElement('div');
+<<<<<<< HEAD
 var options = document.createElement('div');
 
 var canvasWidth = 400;
@@ -12,10 +13,22 @@ var canvasHeight = 600;
 var DEFAULT_SPEED = 6;
 
 var DEFAULT_PLAYER_MOVE = 8;
+=======
+var width = 400;
+var height = 600;
+var DEFAULT_SPEED = 7;
+var DEFAULT_PLAYER_MOVE = 5;
+>>>>>>> a05fe2ad688c1e123e02561084072e7c3a6cb06c
 var DEFAULT_DIFF = 5;
 
 var player1Score = 0;
 var otherScore = 0;
+
+var settingsMenu = document.createElement('INPUT');
+settingsMenu.setAttribute('type', 'radio');
+settingsMenu.style.background = "#C0C0C0";
+settingsMenu.style.border = "solid";
+settingsMenu.style.borderRadius = "50%"
 
 var colorScales = { //add more from back of book
 	greys : ["#898989", "#959595", "#A0A0A0", "#ACACAC", "#B7B7B7", "#C2C2C2", "#CCCCCC", "#D7D7D7", "#ECECEC"],
@@ -80,7 +93,27 @@ canvas.style.border = 'thin solid black';
 //canvas.style.left = '50%';
 var context = canvas.getContext('2d');
 
+<<<<<<< HEAD
 //background color stuff
+=======
+
+window.onload = function() {
+	document.body.appendChild(canvas);
+	document.body.appendChild(scoreboard);
+	document.body.appendChild(settingsMenu);
+	colorShift();
+	animate(step); //1.updates all the objects, 2. renders them, 3. reqAnimFrame to restep
+}
+
+
+var step = function() {
+	update();
+	render();
+	
+	animate(step);
+};
+
+>>>>>>> a05fe2ad688c1e123e02561084072e7c3a6cb06c
 var whiten = false;
 var colorIndex= 0;
 var currentColor = "#898989";
