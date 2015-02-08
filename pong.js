@@ -25,7 +25,7 @@ var colorScalesRanges = { //this won't work... need smaller spectrums
 	greys : [parseInt("898989", 16), parseInt("ECECEC", 16)],
 	lightBlues: [parseInt("00AEED", 16), parseInt("EBF5FC", 16)]
 }
-console.log(colorScalesRanges);
+//console.log(colorScalesRanges);
 
 //scorebd 
 scoreboard.style.background = "#C0C0C0";
@@ -35,7 +35,7 @@ scoreboard.style.border = "solid";
 scoreboard.style.display = 'block';
 scoreboard.style.width = '200px';
 scoreboard.style.height = '120px';
-scoreboard.style.padding = '3px';
+scoreboard.style.padding = '8px';
 scoreboard.style.position = 'absolute';
 scoreboard.style.left = '50%';
 scoreboard.style.top = '50%';
@@ -52,7 +52,7 @@ options.style.height = '120px';
 options.style.position = 'absolute';
 options.style.left = '50%';
 options.style.top = '75%';
-options.style.padding = '3px';
+options.style.padding = '8px';
 options.setAttribute('id', 'options');
 var diffOptions = document.createElement('div'); //difficulty options
 options.appendChild(diffOptions);
@@ -67,7 +67,7 @@ slider1.setAttribute('value', '6');
 slider1.setAttribute('max', '13');
 slider1.setAttribute('step', '1');
 r1Label.setAttribute('for', 'slider1');
-r1Label.innerHTML = 'Speed: ' + slider1.value;
+slider1.style.paddingLeft = '40px';
 
 diffOptions.appendChild(r1Label);
 diffOptions.appendChild(slider1);	
@@ -128,7 +128,7 @@ var render = function() {
 };
 
 var update = function() {
-	r1Label.innerHTML = 'Speed: ' + slider1.value;
+	r1Label.innerHTML = 'Ball Speed: ' + slider1.value;
 	DEFAULT_SPEED = parseInt(slider1.value);
 	player1.update();
 	player2.update();
@@ -233,7 +233,12 @@ function Ball(x, y){
 	this.x = x;
 	this.y = y;
 	this.x_speed = 0;
-	this.y_speed = DEFAULT_SPEED;
+	
+	if((Math.round(Math.random() * 30) + 1) % 2 == 0){
+		this.y_speed = -DEFAULT_SPEED;
+	}
+	else
+		this.y_speed = DEFAULT_SPEED;
 	this.radius = 5;
 }
 	Ball.prototype.render = function() {
@@ -259,18 +264,23 @@ function Ball(x, y){
 		}
 
 		if(this.y < 0){
-			console.log('you won');
+			//console.log('you won');
 	   		player1Score++;
 		}
 		else if(this.y > 600){
-			console.log('comp won');
+			//console.log('comp won');
 			otherScore++;
 		}
 
 		if(this.y < 0 || this.y > 600){ // point
 			scoreboard.innerHTML = "<center> Your Score: "+player1Score+"</center><br> <center> Computer Score: "+otherScore+"</center>";
 			this.x_speed = 0;
-			this.y_speed = DEFAULT_SPEED;
+			if((Math.round(Math.random() * 10) + 1) % 2 == 0){
+				this.y_speed = -DEFAULT_SPEED;
+			}
+			else{
+				this.y_speed = DEFAULT_SPEED;
+			}
 			this.x = 200;
 			this.y = 300;
 		}
